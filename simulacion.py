@@ -1,7 +1,6 @@
 import simpy
 import random
 import numpy as np
-import time
 
 random.seed(42)  # Semilla para reproducibilidad
 np.random.seed(42)  # Semilla para reproducibilidad
