@@ -1,99 +1,213 @@
 import simpy
 import random
+import numpy as np
+import time
 
 random.seed(42)  # Semilla para reproducibilidad
+np.random.seed(42)  # Semilla para reproducibilidad
+
+
+class Muelle:
+    def __init__(
+        self,
+        env: simpy.Environment,
+        num_muelles: int,
+        grados_libertad: int,
+        num_petroleros: int,
+    ) -> None:
+        self.env = env
+        self.muelles = simpy.Resource(env, capacity=num_muelles)
+        self.tiempo_descarga = np.random.chisquare(grados_libertad, num_petroleros)
+        self.numero_total_barcos_atracados = 0
+        self.tiempos_atraque = []
+
+
+class Remolcador:
+    def __init__(self, env: simpy.Environment, num_remolcadores: int) -> None:
+        self.env = env
+        self.remolcadores = simpy.Resource(env, capacity=num_remolcadores)
+
+    def calcular_tiempo_transporte(self, llevando_barco: bool):
+        if llevando_barco:
+            return max(0, random.gauss(10, 3))
+        else:
+            return max(0, random.gauss(2, 1))
 
 
 class Puerto:
-    def __init__(self, env, num_remolcadores, num_muelles, puntos_llegada):
+    def __init__(self, env, puntos_llegada):
         self.env = env
-        self.remolcadores = simpy.Resource(env, capacity=num_remolcadores)
-        self.muelles = simpy.Resource(env, capacity=num_muelles)
-        self.tiempo_descarga = lambda: random.chisquare(
-            5 * 60
-        )  # Chi-cuadrado con 5 grados de libertad para tiempo de descarga
-        self.puntos_llegada = [
-            (x * 60, y) for x, y in puntos_llegada.items()
-        ]  # Convertir las coordenadas x a minutos
-        self.tiempos_atraque = []  # Lista para almacenar los tiempos de atraco
-        self.numero_total_barcos_atracados = 0
-        self.numero_total_barcos_esperando = 0
-        self.cola_espera = simpy.Store(env)
+        self.puntos_llegada = puntos_llegada
+        self.tiempos_espera_1 = []
+        self.tiempos_espera_2 = []
+        self.tiempos_atraque = []
+        self.tiempos_espera_muelle = []
+        self.max_t_f = 0
+        self.espera = 0
+        self.max_espera = 0
+        self.esperas_tiempo = []
 
-    def llegada_petrolero(self):
-        tiempo_llegada = self.calcular_tiempo_atraque(llevando_barco=False)
-        yield self.env.timeout(tiempo_llegada)
 
-        # Intentar obtener un remolcador
-        with self.remolcadores.request() as req:
-            yield req
+class Evento:
+    def __init__(
+        self,
+        env: simpy.Environment,
+        muelle: Muelle,
+        remolcador: Remolcador,
+        puerto: Puerto,
+    ) -> None:
+        self.env = env
+        self.muelle = muelle
+        self.remolcador = remolcador
+        self.puerto = puerto
+        self.duracion_evento = []
 
-            tiempo_atraque = self.calcular_tiempo_atraque(llevando_barco=True)
-            yield self.env.timeout(tiempo_atraque)
-            self.tiempos_atraque.append(self.env.now)
-            self.numero_total_barcos_atracados += 1
+    def evento(self):
+        t_i = self.env.now
+        t_i_e = self.env.now
 
-    def calcular_tiempo_atraque(self, llevando_barco):
-        if llevando_barco:
-            return max(
-                0, random.gauss(10, 3)
-            )  # Remolque llevando un barco, tiempo desde desplazamientos.txt
-        else:
-            return max(0, random.gauss(2, 1))  # Remolque vacío, distribución normal
+        with self.remolcador.remolcadores.request() as req_remolcador_ida:
+            self.puerto.espera += 1
+            yield req_remolcador_ida
+
+            t_f_e_1 = self.env.now
+
+            if t_i_e != t_f_e_1:
+                self.puerto.max_espera = max(self.puerto.espera, self.puerto.max_espera)
+
+            self.puerto.esperas_tiempo.append((self.env.now, self.puerto.espera - 1))
+
+            self.puerto.espera -= 1
+
+            tiempo_ida_remolcador = self.remolcador.calcular_tiempo_transporte(
+                llevando_barco=False
+            )
+
+            yield self.env.timeout(tiempo_ida_remolcador)
+
+            t_f_e_2 = self.env.now
+
+            with self.muelle.muelles.request() as req_muelle_existe:
+                yield req_muelle_existe
+
+                tiempo_vuelta_remolcador = self.remolcador.calcular_tiempo_transporte(
+                    llevando_barco=True
+                )
+                yield self.env.timeout(tiempo_vuelta_remolcador)
+
+        t_i_a = self.env.now
+
+        with self.muelle.muelles.request() as req_muelle_asignado:
+            yield req_muelle_asignado
+
+            self.muelle.numero_total_barcos_atracados += 1
+            tiempo_descarga = self.muelle.tiempo_descarga[
+                self.muelle.numero_total_barcos_atracados - 1
+            ]
+            yield self.env.timeout(tiempo_descarga)
+        t_f_a = self.env.now
+        t_i_e_m = self.env.now
+        with self.remolcador.remolcadores.request() as req_remolcador_vuelta:
+            yield req_remolcador_vuelta
+
+            t_f_e_m = self.env.now
+
+            tiempo_vuelta_remolcador = self.remolcador.calcular_tiempo_transporte(
+                llevando_barco=True
+            )
+            yield self.env.timeout(tiempo_vuelta_remolcador)
+        t_f = self.env.now
+
+        self.puerto.tiempos_atraque.append(t_f - t_i)
+        self.puerto.max_t_f = max(t_f, self.puerto.max_t_f)
+        self.puerto.tiempos_espera_1.append(t_f_e_1 - t_i_e)
+        self.puerto.tiempos_espera_2.append(t_f_e_2 - t_i_e)
+        self.puerto.tiempos_espera_muelle.append(t_f_e_m - t_i_e_m)
+        self.muelle.tiempos_atraque.append(t_f_a - t_i_a)
 
 
 # Configuración inicial
 num_remolcadores = 10
 num_muelles = 20
-puntos_llegada = {"0": 5, "5": 7, "8": 6, "15": 9, "17": 6, "24": 5}
+grados_libertad = 5
+puntos_llegada = {0: 5, 5: 7, 8: 6, 15: 9, 17: 6, 24: 5}
+puntos_llegada = {int(k) * 60: v for k, v in puntos_llegada.items()}
+
+num_petroleros = sum(puntos_llegada.values())  # Número total de petroleros
+
 # Simulación
 env = simpy.Environment()
-puerto = Puerto(env, num_remolcadores, num_muelles, puntos_llegada)
+
+puerto = Puerto(env, puntos_llegada)
+muelle = Muelle(env, num_muelles, grados_libertad, num_petroleros)
+remolcador = Remolcador(env, num_remolcadores)
 
 
 # Proceso de llegada de petroleros
-def llegada_petroleros(env, puerto):
-    for i in range(25):
-        if str(i) in puntos_llegada.keys():
-            for _ in range(puntos_llegada[str(i)]):
-                env.process(puerto.llegada_petrolero())
-        # yield env.timeout(60)
+def llegada_petroleros(env):
+    for i in range(25 * 60):
+        if int(i) in puntos_llegada.keys():
+            for _ in range(puntos_llegada[int(i)]):
+                env.process(Evento(env, muelle, remolcador, puerto).evento())
+        yield env.timeout(1)
 
 
-env.process(llegada_petroleros(env, puerto))
+env.process(llegada_petroleros(env))
 
 # Simulación
-env.run(until=24 * 60)  # Simulación de 24 horas en minutos
+env.run(until=25 * 60)  # Simulación de 24 horas en minutos
 
-# Calcular estadísticas
-tiempo_medio_atraque = (
-    sum(puerto.tiempos_atraque) / len(puerto.tiempos_atraque)
-    if puerto.tiempos_atraque
-    else 0
+
+esperas_tiempo = [(0, 0)]
+for i in range(0, len(puerto.esperas_tiempo) - 1):
+    if puerto.esperas_tiempo[i][0] == puerto.esperas_tiempo[i + 1][0]:
+        continue
+
+    esperas_tiempo.append(
+        (
+            abs(puerto.esperas_tiempo[i][0] - puerto.esperas_tiempo[i + 1][0]),
+            puerto.esperas_tiempo[i][1],
+        )
+    )
+avg_t_esperando = sum([tupla[0] * tupla[1] for tupla in esperas_tiempo]) / sum(
+    [tupla[0] for tupla in esperas_tiempo]
 )
-tiempo_maximo_atraque = max(puerto.tiempos_atraque) if puerto.tiempos_atraque else 0
-numero_medio_barcos_atracados = (
-    puerto.numero_total_barcos_atracados / num_muelles
-)  # Promedio por muelle
-numero_medio_barcos_esperando = (
-    puerto.numero_total_barcos_esperando / num_remolcadores
-)  # Promedio por remolcador
-if puerto.tiempos_atraque:
-    numero_maximo_barcos_esperando = max(
-        range(len(puerto.tiempos_atraque))
-    )  # Número máximo en cualquier momento
-else:
-    numero_maximo_barcos_esperando = 0
 
+# Resultados
 
-# Imprimir estadísticas
-print("Estadísticas finales de la simulación:")
-print(f"Tiempo medio de atraco: {tiempo_medio_atraque:.2f} minutos")
-print(f"Tiempo máximo de atraco: {tiempo_maximo_atraque:.2f} minutos")
 print(
-    f"Número medio de barcos atracados: {numero_medio_barcos_atracados:.2f} por muelle"
+    "------------------------------------------Contadores------------------------------------------"
 )
+print(f"Numero total de barcos: {num_petroleros}")
+print(f"Numero total de barcos atracados: {muelle.numero_total_barcos_atracados}")
+print(f"Numero medio de barcos atracados: { num_petroleros / puerto.max_t_f}")
+print(f"Tiempo total de simulacion: {puerto.max_t_f}")
+print(f"Maximo numero de barcos esperando: {puerto.max_espera}")
+print(f"Numero medio de barcos esperando: {avg_t_esperando}")
+
 print(
-    f"Número medio de barcos esperando: {numero_medio_barcos_esperando:.2f} por remolcador"
+    "------------------------------------------Media------------------------------------------"
 )
-print(f"Número máximo de barcos esperando: {numero_maximo_barcos_esperando}")
+print(f"Tiempo medio en atracar: {np.mean(puerto.tiempos_atraque)}")
+print(f"Tiempo medio en espera 1: {np.mean(puerto.tiempos_espera_1)}")
+print(f"Tiempo medio en espera 2: {np.mean(puerto.tiempos_espera_2)}")
+print(f"Tiempo medio en espera muelle: {np.mean(puerto.tiempos_espera_muelle)}")
+print(f"Tiempo medio de atraque: {np.mean(muelle.tiempos_atraque)}")
+
+print(
+    "------------------------------------------Maximo------------------------------------------"
+)
+print(f"Tiempo maximo en atracar: {np.max(puerto.tiempos_atraque)}")
+print(f"Tiempo maximo en espera 1: {np.max(puerto.tiempos_espera_1)}")
+print(f"Tiempo maximo en espera 2: {np.max(puerto.tiempos_espera_2)}")
+print(f"Tiempo maximo en espera muelle: {np.max(puerto.tiempos_espera_muelle)}")
+print(f"Tiempo maximo de atraque: {np.max(muelle.tiempos_atraque)}")
+
+print(
+    "------------------------------------------Minimo------------------------------------------"
+)
+print(f"Tiempo minimo en atracar: {np.min(puerto.tiempos_atraque)}")
+print(f"Tiempo minimo en espera 1: {np.min(puerto.tiempos_espera_1)}")
+print(f"Tiempo minimo en espera 2: {np.min(puerto.tiempos_espera_2)}")
+print(f"Tiempo minimo en espera muelle: {np.min(puerto.tiempos_espera_muelle)}")
+print(f"Tiempo minimo de atraque: {np.min(muelle.tiempos_atraque)}")
