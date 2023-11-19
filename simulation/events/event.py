@@ -43,11 +43,24 @@ class Event:
 
             t_f_e_2 = self.env.now
 
-            self.available_dock()
+            with self.muelle.muelles.request() as req_muelle_existe:
+                yield req_muelle_existe
+
+                tiempo_vuelta_remolcador = self.remolcador.calcular_tiempo_transporte(
+                    llevando_barco=True
+                )
+                yield self.env.timeout(tiempo_vuelta_remolcador)
 
         t_i_a = self.env.now
 
-        self.time_dock()
+        with self.muelle.muelles.request() as req_muelle_asignado:
+            yield req_muelle_asignado
+
+            self.muelle.numero_total_barcos_atracados += 1
+            tiempo_descarga = self.muelle.tiempo_descarga[
+                self.muelle.numero_total_barcos_atracados - 1
+            ]
+            yield self.env.timeout(tiempo_descarga)
 
         t_f_a = self.env.now
         t_i_e_m = self.env.now
@@ -64,41 +77,6 @@ class Event:
 
         t_f = self.env.now
 
-        self.get_times(
-            t_i, t_i_e, t_f_e_1, t_f_e_2, t_i_a, t_f_a, t_i_e_m, t_f_e_m, t_f
-        )
-
-    def available_dock(self) -> None:
-        with self.muelle.muelles.request() as req_muelle_existe:
-            yield req_muelle_existe
-
-            tiempo_vuelta_remolcador = self.remolcador.calcular_tiempo_transporte(
-                llevando_barco=True
-            )
-            yield self.env.timeout(tiempo_vuelta_remolcador)
-
-    def time_dock(self) -> None:
-        with self.muelle.muelles.request() as req_muelle_asignado:
-            yield req_muelle_asignado
-
-            self.muelle.numero_total_barcos_atracados += 1
-            tiempo_descarga = self.muelle.tiempo_descarga[
-                self.muelle.numero_total_barcos_atracados - 1
-            ]
-            yield self.env.timeout(tiempo_descarga)
-
-    def get_times(
-        self,
-        t_i: float,
-        t_i_e: float,
-        t_f_e_1: float,
-        t_f_e_2: float,
-        t_i_a: float,
-        t_f_a: float,
-        t_i_e_m: float,
-        t_f_e_m: float,
-        t_f: float,
-    ) -> None:
         self.puerto.tiempos_atraque.append(t_f - t_i)
         self.puerto.max_t_f = max(t_f, self.puerto.max_t_f)
         self.puerto.tiempos_espera_1.append(t_f_e_1 - t_i_e)

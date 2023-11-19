@@ -15,9 +15,9 @@ np.random.seed(42)  # Semilla para reproducibilidad
 def main() -> None:
     # Configuración inicial
     num_remolcadores = 10
-    num_muelles = 20
+    num_muelles = 25
     grados_libertad = 5
-    puntos_llegada = {0: 5, 5: 7, 8: 6, 15: 9, 17: 6, 24: 5}
+    puntos_llegada = {0: 50, 5: 7, 8: 6, 15: 9, 17: 6, 24: 5}
     puntos_llegada = {int(k) * 60: v for k, v in puntos_llegada.items()}
     num_petroleros = sum(puntos_llegada.values())
 
