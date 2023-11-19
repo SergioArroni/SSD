@@ -27,7 +27,7 @@ def main() -> None:
             dh = siguiente - prev
             dd = puntos_lambda[siguiente] - puntos_lambda[prev]
             pendiente = dd / dh
-            valores_lambda[h] = puntos_lambda[h] + pendiente * (h - prev)
+            valores_lambda[h] = puntos_lambda[prev] + pendiente * (h - prev)
 
     puntos_llegada = {h*60: np.random.poisson(d) for (h,d) in valores_lambda.items()}
     num_petroleros = sum(puntos_llegada.values())
