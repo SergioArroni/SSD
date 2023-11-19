@@ -12,7 +12,7 @@ random.seed(42)  # Semilla para reproducibilidad
 np.random.seed(42)  # Semilla para reproducibilidad
 
 
-def main():
+def main() -> None:
     # Configuración inicial
     num_remolcadores = 10
     num_muelles = 20
@@ -31,11 +31,13 @@ def main():
     env.process(llegada_petroleros(env, muelle, remolcador, puerto, puntos_llegada))
 
     # Simulación
-    env.run(until=25 * 60)  # Simulación de 24 horas en minutos
+    env.run(until=25 * 60)
 
     # Llamar a la función con el nombre del archivo deseado
     name = "../results/resultados.txt"
-    imprimir_resultados(name, num_petroleros, muelle, puerto, num_remolcadores, num_muelles)
+    imprimir_resultados(
+        name, num_petroleros, muelle, puerto, num_remolcadores, num_muelles
+    )
 
 
 if __name__ == "__main__":

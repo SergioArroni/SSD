@@ -7,7 +7,7 @@ class Tugboat:
         self.env = env
         self.remolcadores = simpy.Resource(env, capacity=num_remolcadores)
 
-    def calcular_tiempo_transporte(self, llevando_barco: bool):
+    def calcular_tiempo_transporte(self, llevando_barco: bool) -> float:
         if llevando_barco:
             return max(0, random.gauss(10, 3))
         else:

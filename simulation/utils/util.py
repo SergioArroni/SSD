@@ -5,7 +5,7 @@ from components.dock.dock import Dock
 from components.tugboat.tugboat import Tugboat
 
 
-def aux_wait(puerto: Port):
+def aux_wait(puerto: Port) -> float:
     esperas_tiempo = [(0, 0)]
     for i in range(0, len(puerto.esperas_tiempo) - 1):
         if puerto.esperas_tiempo[i][0] == puerto.esperas_tiempo[i + 1][0]:
@@ -28,7 +28,7 @@ def llegada_petroleros(
     remolcador: Tugboat,
     puerto: Port,
     puntos_llegada: dict,
-):
+) -> None:
     for i in range(25 * 60):
         if int(i) in puntos_llegada.keys():
             for _ in range(puntos_llegada[int(i)]):

@@ -1,20 +1,30 @@
+from io import TextIOWrapper
 import numpy as np
+from components.port.port import Port
+from components.dock.dock import Dock
 
 
 def imprimir_resultados(
-    name, num_petroleros, muelle, puerto, num_remolcador, num_muelles
-):
+    name: str,
+    num_petroleros: int,
+    muelle: Dock,
+    puerto: Port,
+    num_remolcador: int,
+    num_muelles: int,
+) -> None:
     with open(name, "a") as file:
         file.write(
             f"------------------------------------------num_remolcador: {num_remolcador} | num_muelles: {num_muelles}------------------------------------------\n"
         )
         imprimir_contadores(file, num_petroleros, muelle, puerto)
-        imprimir_media(file, puerto, muelle)
-        imprimir_maximo(file, puerto, muelle)
-        imprimir_minimo(file, puerto, muelle)
+        imprimir_media(file, muelle, puerto)
+        imprimir_maximo(file, muelle, puerto)
+        imprimir_minimo(file, muelle, puerto)
 
 
-def imprimir_contadores(file, num_petroleros, muelle, puerto):
+def imprimir_contadores(
+    file: TextIOWrapper, num_petroleros: int, muelle: Dock, puerto: Port
+) -> None:
     file.write(
         "------------------------------------------Contadores------------------------------------------\n"
     )
@@ -32,7 +42,7 @@ def imprimir_contadores(file, num_petroleros, muelle, puerto):
     )
 
 
-def imprimir_media(file, puerto, muelle):
+def imprimir_media(file: TextIOWrapper, muelle: Dock, puerto: Port) -> None:
     file.write(
         "------------------------------------------Media------------------------------------------\n"
     )
@@ -45,7 +55,7 @@ def imprimir_media(file, puerto, muelle):
     file.write(f"Tiempo medio de atraque: {np.mean(muelle.tiempos_atraque)}\n")
 
 
-def imprimir_maximo(file, puerto, muelle):
+def imprimir_maximo(file: TextIOWrapper, muelle: Dock, puerto: Port) -> None:
     file.write(
         "------------------------------------------Maximo------------------------------------------\n"
     )
@@ -58,7 +68,7 @@ def imprimir_maximo(file, puerto, muelle):
     file.write(f"Tiempo maximo de atraque: {np.max(muelle.tiempos_atraque)}\n")
 
 
-def imprimir_minimo(file, puerto, muelle):
+def imprimir_minimo(file: TextIOWrapper, muelle: Dock, puerto: Port) -> None:
     file.write(
         "------------------------------------------Minimo------------------------------------------\n"
     )

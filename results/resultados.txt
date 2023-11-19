@@ -50,3 +50,211 @@ Tiempo minimo en espera 1: 0
 Tiempo minimo en espera 2: 0.1587137343960876
 Tiempo minimo en espera muelle: 0.0
 Tiempo minimo de atraque: 0.7887594933609421
+------------------------------------------num_remolcador: 10 | num_muelles: 20------------------------------------------
+------------------------------------------Contadores------------------------------------------
+Numero total de barcos: 38
+Numero total de barcos atracados: 38
+Numero medio de barcos atracados: 0.025819127140619496
+Tiempo total de simulacion: 1471.7770973836352
+Maximo numero de barcos esperando: 0
+Numero medio de barcos esperando: 0.0
+------------------------------------------Media------------------------------------------
+Tiempo medio en atracar: 27.278633359361727
+Tiempo medio en espera 1: 0.0
+Tiempo medio en espera 2: 1.9385348172436259
+Tiempo medio en espera muelle: 0.0
+Tiempo medio de atraque: 4.652385121237779
+------------------------------------------Maximo------------------------------------------
+Tiempo maximo en atracar: 38.37005638938342
+Tiempo maximo en espera 1: 0
+Tiempo maximo en espera 2: 3.5930604142629363
+Tiempo maximo en espera muelle: 0.0
+Tiempo maximo de atraque: 10.843213481753269
+------------------------------------------Minimo------------------------------------------
+Tiempo minimo en atracar: 18.75776931201443
+Tiempo minimo en espera 1: 0
+Tiempo minimo en espera 2: 0.1587137343960876
+Tiempo minimo en espera muelle: 0.0
+Tiempo minimo de atraque: 0.7887594933609421
+------------------------------------------num_remolcador: 10 | num_muelles: 20------------------------------------------
+------------------------------------------Contadores------------------------------------------
+Numero total de barcos: 38
+Numero total de barcos atracados: 38
+Numero medio de barcos atracados: 0.025819127140619496
+Tiempo total de simulacion: 1471.7770973836352
+Maximo numero de barcos esperando: 0
+Numero medio de barcos esperando: 0.0
+------------------------------------------Media------------------------------------------
+Tiempo medio en atracar: 27.278633359361727
+Tiempo medio en espera 1: 0.0
+Tiempo medio en espera 2: 1.9385348172436259
+Tiempo medio en espera muelle: 0.0
+Tiempo medio de atraque: 4.652385121237779
+------------------------------------------Maximo------------------------------------------
+Tiempo maximo en atracar: 38.37005638938342
+Tiempo maximo en espera 1: 0
+Tiempo maximo en espera 2: 3.5930604142629363
+Tiempo maximo en espera muelle: 0.0
+Tiempo maximo de atraque: 10.843213481753269
+------------------------------------------Minimo------------------------------------------
+Tiempo minimo en atracar: 18.75776931201443
+Tiempo minimo en espera 1: 0
+Tiempo minimo en espera 2: 0.1587137343960876
+Tiempo minimo en espera muelle: 0.0
+Tiempo minimo de atraque: 0.7887594933609421
+------------------------------------------num_remolcador: 10 | num_muelles: 20------------------------------------------
+------------------------------------------Contadores------------------------------------------
+Numero total de barcos: 38
+Numero total de barcos atracados: 38
+Numero medio de barcos atracados: 0.025819127140619496
+Tiempo total de simulacion: 1471.7770973836352
+Maximo numero de barcos esperando: 0
+Numero medio de barcos esperando: 0.0
+------------------------------------------Media------------------------------------------
+Tiempo medio en atracar: 27.278633359361727
+Tiempo medio en espera 1: 0.0
+Tiempo medio en espera 2: 1.9385348172436259
+Tiempo medio en espera muelle: 0.0
+Tiempo medio de atraque: 4.652385121237779
+------------------------------------------Maximo------------------------------------------
+Tiempo maximo en atracar: 38.37005638938342
+Tiempo maximo en espera 1: 0
+Tiempo maximo en espera 2: 3.5930604142629363
+Tiempo maximo en espera muelle: 0.0
+Tiempo maximo de atraque: 10.843213481753269
+------------------------------------------Minimo------------------------------------------
+Tiempo minimo en atracar: 18.75776931201443
+Tiempo minimo en espera 1: 0
+Tiempo minimo en espera 2: 0.1587137343960876
+Tiempo minimo en espera muelle: 0.0
+Tiempo minimo de atraque: 0.7887594933609421
+------------------------------------------num_remolcador: 10 | num_muelles: 20------------------------------------------
+------------------------------------------Contadores------------------------------------------
+Numero total de barcos: 38
+Numero total de barcos atracados: 38
+Numero medio de barcos atracados: 0.025819127140619496
+Tiempo total de simulacion: 1471.7770973836352
+Maximo numero de barcos esperando: 0
+Numero medio de barcos esperando: 0.0
+------------------------------------------Media------------------------------------------
+Tiempo medio en atracar: 27.278633359361727
+Tiempo medio en espera 1: 0.0
+Tiempo medio en espera 2: 1.9385348172436259
+Tiempo medio en espera muelle: 0.0
+Tiempo medio de atraque: 4.652385121237779
+------------------------------------------Maximo------------------------------------------
+Tiempo maximo en atracar: 38.37005638938342
+Tiempo maximo en espera 1: 0
+Tiempo maximo en espera 2: 3.5930604142629363
+Tiempo maximo en espera muelle: 0.0
+Tiempo maximo de atraque: 10.843213481753269
+------------------------------------------Minimo------------------------------------------
+Tiempo minimo en atracar: 18.75776931201443
+Tiempo minimo en espera 1: 0
+Tiempo minimo en espera 2: 0.1587137343960876
+Tiempo minimo en espera muelle: 0.0
+Tiempo minimo de atraque: 0.7887594933609421
+------------------------------------------num_remolcador: 10 | num_muelles: 20------------------------------------------
+------------------------------------------Contadores------------------------------------------
+Numero total de barcos: 38
+Numero total de barcos atracados: 0
+Numero medio de barcos atracados: 0.025925351477252032
+Tiempo total de simulacion: 1465.7467627138155
+Maximo numero de barcos esperando: 0
+Numero medio de barcos esperando: 0.0
+------------------------------------------Media------------------------------------------
+Tiempo medio en atracar: 22.62624823812395
+Tiempo medio en espera 1: 0.0
+Tiempo medio en espera 2: 1.9385348172436259
+Tiempo medio en espera muelle: 0.0
+Tiempo medio de atraque: 0.0
+------------------------------------------Maximo------------------------------------------
+Tiempo maximo en atracar: 31.6213728604734
+Tiempo maximo en espera 1: 0
+Tiempo maximo en espera 2: 3.5930604142629363
+Tiempo maximo en espera muelle: 0.0
+Tiempo maximo de atraque: 0.0
+------------------------------------------Minimo------------------------------------------
+Tiempo minimo en atracar: 15.416580301729539
+Tiempo minimo en espera 1: 0
+Tiempo minimo en espera 2: 0.1587137343960876
+Tiempo minimo en espera muelle: 0.0
+Tiempo minimo de atraque: 0.0
+------------------------------------------num_remolcador: 10 | num_muelles: 20------------------------------------------
+------------------------------------------Contadores------------------------------------------
+Numero total de barcos: 38
+Numero total de barcos atracados: 0
+Numero medio de barcos atracados: 0.02605151037079608
+Tiempo total de simulacion: 1458.6486333858884
+Maximo numero de barcos esperando: 0
+Numero medio de barcos esperando: 0.0
+------------------------------------------Media------------------------------------------
+Tiempo medio en atracar: 11.883983828907919
+Tiempo medio en espera 1: 0.0
+Tiempo medio en espera 2: 2.1342122980481837
+Tiempo medio en espera muelle: -706.6208259341711
+Tiempo medio de atraque: 0.0
+------------------------------------------Maximo------------------------------------------
+Tiempo maximo en atracar: 19.854624090789684
+Tiempo maximo en espera 1: 0
+Tiempo maximo en espera 2: 3.4218499813434846
+Tiempo maximo en espera muelle: -7.335036156645608
+Tiempo maximo de atraque: 0.0
+------------------------------------------Minimo------------------------------------------
+Tiempo minimo en atracar: 4.3883771826718885
+Tiempo minimo en espera 1: 0
+Tiempo minimo en espera 2: 0.7809252587043147
+Tiempo minimo en espera muelle: -1458.6486333858884
+Tiempo minimo de atraque: 0.0
+------------------------------------------num_remolcador: 10 | num_muelles: 20------------------------------------------
+------------------------------------------Contadores------------------------------------------
+Numero total de barcos: 38
+Numero total de barcos atracados: 0
+Numero medio de barcos atracados: 0.025925351477252032
+Tiempo total de simulacion: 1465.7467627138155
+Maximo numero de barcos esperando: 0
+Numero medio de barcos esperando: 0.0
+------------------------------------------Media------------------------------------------
+Tiempo medio en atracar: 22.62624823812395
+Tiempo medio en espera 1: 0.0
+Tiempo medio en espera 2: 1.9385348172436259
+Tiempo medio en espera muelle: 0.0
+Tiempo medio de atraque: 0.0
+------------------------------------------Maximo------------------------------------------
+Tiempo maximo en atracar: 31.6213728604734
+Tiempo maximo en espera 1: 0
+Tiempo maximo en espera 2: 3.5930604142629363
+Tiempo maximo en espera muelle: 0.0
+Tiempo maximo de atraque: 0.0
+------------------------------------------Minimo------------------------------------------
+Tiempo minimo en atracar: 15.416580301729539
+Tiempo minimo en espera 1: 0
+Tiempo minimo en espera 2: 0.1587137343960876
+Tiempo minimo en espera muelle: 0.0
+Tiempo minimo de atraque: 0.0
+------------------------------------------num_remolcador: 10 | num_muelles: 20------------------------------------------
+------------------------------------------Contadores------------------------------------------
+Numero total de barcos: 38
+Numero total de barcos atracados: 0
+Numero medio de barcos atracados: 0.02605151037079608
+Tiempo total de simulacion: 1458.6486333858884
+Maximo numero de barcos esperando: 0
+Numero medio de barcos esperando: 0.0
+------------------------------------------Media------------------------------------------
+Tiempo medio en atracar: 11.883983828907919
+Tiempo medio en espera 1: 0.0
+Tiempo medio en espera 2: 2.1342122980481837
+Tiempo medio en espera muelle: 0.0
+Tiempo medio de atraque: 0.0
+------------------------------------------Maximo------------------------------------------
+Tiempo maximo en atracar: 19.854624090789684
+Tiempo maximo en espera 1: 0
+Tiempo maximo en espera 2: 3.4218499813434846
+Tiempo maximo en espera muelle: 0.0
+Tiempo maximo de atraque: 0.0
+------------------------------------------Minimo------------------------------------------
+Tiempo minimo en atracar: 4.3883771826718885
+Tiempo minimo en espera 1: 0
+Tiempo minimo en espera 2: 0.7809252587043147
+Tiempo minimo en espera muelle: 0.0
+Tiempo minimo de atraque: 0.0

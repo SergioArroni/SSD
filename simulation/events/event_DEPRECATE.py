@@ -18,10 +18,28 @@ class Event:
         self.puerto = puerto
         self.duracion_evento = []
 
-    def event(self):
+    def event(self) -> None:
         t_i = self.env.now
         t_i_e = self.env.now
 
+        t_f_e_1, t_f_e_2 = self.go_tugboat(t_i_e)
+
+        t_i_a = self.env.now
+
+        self.time_dock()
+
+        t_f_a = self.env.now
+        t_i_e_m = self.env.now
+
+        t_f_e_m = self.return_tugboat()
+
+        t_f = self.env.now
+
+        self.get_times(
+            t_i, t_i_e, t_f_e_1, t_f_e_2, t_i_a, t_f_a, t_i_e_m, t_f_e_m, t_f
+        )
+
+    def go_tugboat(self, t_i_e) -> (float, float):
         with self.remolcador.remolcadores.request() as req_remolcador_ida:
             self.puerto.espera += 1
             yield req_remolcador_ida
@@ -45,28 +63,7 @@ class Event:
 
             self.available_dock()
 
-        t_i_a = self.env.now
-
-        self.time_dock()
-
-        t_f_a = self.env.now
-        t_i_e_m = self.env.now
-
-        with self.remolcador.remolcadores.request() as req_remolcador_vuelta:
-            yield req_remolcador_vuelta
-
-            t_f_e_m = self.env.now
-
-            tiempo_vuelta_remolcador = self.remolcador.calcular_tiempo_transporte(
-                llevando_barco=True
-            )
-            yield self.env.timeout(tiempo_vuelta_remolcador)
-
-        t_f = self.env.now
-
-        self.get_times(
-            t_i, t_i_e, t_f_e_1, t_f_e_2, t_i_a, t_f_a, t_i_e_m, t_f_e_m, t_f
-        )
+            return t_f_e_1, t_f_e_2
 
     def available_dock(self) -> None:
         with self.muelle.muelles.request() as req_muelle_existe:
@@ -76,6 +73,18 @@ class Event:
                 llevando_barco=True
             )
             yield self.env.timeout(tiempo_vuelta_remolcador)
+
+    def return_tugboat(self) -> float:
+        with self.remolcador.remolcadores.request() as req_remolcador_vuelta:
+            yield req_remolcador_vuelta
+
+            t_f_e_m = self.env.now
+
+            tiempo_vuelta_remolcador = self.remolcador.calcular_tiempo_transporte(
+                llevando_barco=True
+            )
+            yield self.env.timeout(tiempo_vuelta_remolcador)
+        return t_f_e_m
 
     def time_dock(self) -> None:
         with self.muelle.muelles.request() as req_muelle_asignado:
