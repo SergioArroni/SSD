@@ -17,19 +17,21 @@ def main() -> None:
     num_remolcadores = 10
     num_muelles = 20
     grados_libertad = 5
-    puntos_lambda = { 0: 5, 5: 7, 8: 6, 15: 9, 17: 6, 24: 5 }
+    puntos_lambda = {0: 5, 5: 7, 8: 6, 15: 9, 17: 6, 24: 5}
     valores_lambda = {}
     for h in range(0, 25):
         if h in puntos_lambda.keys():
             valores_lambda[h] = puntos_lambda[h]
         else:
-            prev, siguiente = max([n for n in puntos_lambda.keys() if n<h]), min([n for n in puntos_lambda.keys() if n>h])
+            prev, siguiente = max([n for n in puntos_lambda.keys() if n < h]), min(
+                [n for n in puntos_lambda.keys() if n > h]
+            )
             dh = siguiente - prev
             dd = puntos_lambda[siguiente] - puntos_lambda[prev]
             pendiente = dd / dh
             valores_lambda[h] = puntos_lambda[prev] + pendiente * (h - prev)
 
-    puntos_llegada = {h*60: np.random.poisson(d) for (h,d) in valores_lambda.items()}
+    puntos_llegada = {h * 60: np.random.poisson(d) for (h, d) in valores_lambda.items()}
     num_petroleros = sum(puntos_llegada.values())
 
     # Simulación
